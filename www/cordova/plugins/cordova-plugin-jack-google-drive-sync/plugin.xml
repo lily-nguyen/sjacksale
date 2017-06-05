@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin id="cordova-plugin-jack-google-drive-sync" version="0.0.1" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+    <name>GoogleDriveSync</name>
+    <js-module name="GoogleDriveSync" src="www/GoogleDriveSync.js">
+        <clobbers target="cordova.plugins.GoogleDriveSync" />
+    </js-module>
+    
+    <platform name="windows">
+	    <js-module src="src/windows/GoogleDriveSync.js" name="GoogleDriveSync">
+	        <merges target="" />
+	    </js-module>
+	    <framework src="src/windows/GoogleDriveRT.winmd" custom="true"/>
+	</platform>
+
+</plugin>
