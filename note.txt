@@ -1,0 +1,130 @@
+https://www.linkedin.com/comm/psettings/email/confirm?sig=1K_-KY3Io5X7I1&id=1895015845&ct=1493913910457&midToken=AQHRC9Po9fm8Rg&trk=eml-security_apr_email_confirm-profile_prompt-8-confirm%7Eemail&trkEmail=eml-security_apr_email_confirm-profile_prompt-8-confirm%7Eemail-null-1stayt%7Ej2alrqnv%7Elt-null-psettings%7Eemail%7Econfirmation&lipi=urn%3Ali%3Apage%3Aemail_security_apr_email_confirm%3BPM5DqKaMSKSLiz%2Ft7W%2BpZA%3D%3D
+
+https://guides.codepath.com/android/Installing-Android-SDK-Tools
+
+https://stackoverflow.com/questions/42460205/truncated-android-sdk-package-paths-from-sdkmanager-cli/42521077#42521077
+
+multi thread: http://burnignorance.com/phonegap-tips-and-tricks/implementing-multi-threading-in-android-plugin-for-phonegap-2-6-0/
+
+store: https://www.joshmorony.com/a-summary-of-local-storage-options-for-phonegap-applications/
+
+su dung ionic: http://ionicframework.com/docs/v1/overview/#download
+
+google drive plugin: https://www.npmjs.com/package/cordova-plugin-jc-googledrive
+
+ionic: https://cordova.apache.org/docs/en/latest/config_ref/index.html
+
+ionic : add plugin: http://stackoverflow.com/questions/23673186/ionic-cordova-how-to-integrate-cordova-plugins-into-existing-ionic-project
+
+window : https://cordova.apache.org/docs/en/latest/
+	https://cordova.apache.org/docs/en/latest/guide/platforms/win8/index.html
+		https://forum.ionicframework.com/t/ionic-run-windows-10-mobile-unversal-app/78490/12
+		
+		
+debug eclipse - gradle: http://stackoverflow.com/questions/33035922/debug-a-java-program-by-executing-gradle-run
+
+build google drive to jar with dependences: http://stackoverflow.com/questions/4871656/using-gradle-to-build-a-jar-with-dependencies
+
+google drive: mime type: https://developers.google.com/drive/v3/web/mime-types
+
+save to file: https://cordova.apache.org/docs/en/latest/reference/cordova-plugin-file/
+			
+search:	http://stackoverflow.com/questions/2901831/algorithm-for-autocomplete
+		http://stackoverflow.com/questions/1783652/what-is-the-best-autocomplete-suggest-algorithm-datastructure-c-c
+
+parse csv: https://stackoverflow.com/questions/8493195/how-can-i-parse-a-csv-string-with-javascript-which-contains-comma-in-data
+
+visual studio tools for apache cordova: https://taco.visualstudio.com/en-us/docs/tutorial-using-bower/ 
+visual studio create plugin: https://taco.visualstudio.com/en-us/docs/createplugintutorial/
+plugin API: https://cordova.apache.org/docs/en/latest/plugin_ref/spec.html
+plugin windows: https://taco.visualstudio.com/en-us/docs/create-plugin-windows-phone/
+				https://cordova.apache.org/docs/en/latest/guide/platforms/win8/plugin.html#creating-a-windows-plugin-in-javascript
+				
+Task Scheduler: http://www.digitalcitizen.life/how-create-task-basic-task-wizard			
+
+----------------------------------------------------------------------------------------------------------------
+
+- Setup environment
+-1. nodejs
+1. java sdk and set path
+2. android sdk and set path
+2.1 >> sdkmanager --list --verbose
+2.2 >> sdkmaanger packages shoudl be installed
+3. cordova isntall
+4. gradle and set path
+5. intall intel HAXM: android\extras\intel\Hardware_Accelerated_Execution_Manager
+6. build
+6.1 >> cordova build android
+6.2 >> cordova emulate andoird
+6.3 >> system-images;android-25;google_apis;x86_64
+6.4 >> create avd: echo no | avdmanager create avd --force --name testAVD --abi google_apis/x86_64 --package system-images;android-25;google_apis;x86_64
+6.4.5 test emulator: emulator -avd testAVD
+7. test 
+7.1 project home: >> cordova emulate android'
+--------------------------
+8. ionic framework install
+9. add platform >> ionic cordova platform add windows/android  
+9. >> ionic cordova emulate android
+
+some command:
+1. emulator -list-avds: list available avds
+
+--------------------------
+windows platform:
+- visual studio
+- windows sdk
+- add preference for window version target 10 (config.xml - ): <preference name="windows-target-version" value="10.0" />
+- set "VSINSTALLDIR = C:\Program Files (x86)\Microsoft Visual Studio\2017\Community"
+- run: set windows: developer mode
+- add/ remove window platform >>cordova platform add windows   -  >>cordova platform rm windows
+
+
+save file to: C:\Users\Lily\AppData\Local\Packages\com.smart.jack.sale_h35559jr9hy9m\LocalState (LocalFileSystem.PERSISTENT)
+worker service: https://stackoverflow.com/questions/32760108/cant-find-the-template-to-create-a-visual-c-windows-service-in-vs-2015
+				https://stackoverflow.com/questions/1554047/convert-a-c-program-to-a-windows-serviceio
+				
+MVC vs MVVM vs MVP				https://martinfowler.com/eaaDev/uiArchs.html
+
+--------------------------
+add plugin
+
+ build >>cordova build windows --archs=x64
+ add window >>cordova platform add windows
+ remove window >>cordova platform rm windows
+ add plugin >> cordova plugin add ..\GoogleDriveSync
+ rm plugin >>cordova plugin rm cordova-plugin-jack-google-drive-sync
+
+--------------------------
+
+browserify:
+
+ build index.js>> D:\work\ws\sjacksale\www\js>browserify initial.js -o index.js
+				  D:\work\ws\sjacksale\www\js>watchify initial.js -o index.js
+ 
+-------------------------- 
+
+Visual Studio 2017:
+
+delete entire line: ctrl + shift + L
+
+----------------------------------------------------------------------------------------------------------------
+
+server
+
+	pool data:
+
+	store front:
+		csv that user can view/edit their data easily
+
+client
+
+	store front:
+	backend:
+	sync to server:
+	
+phase 1:
+1. create a bill
+2. save bill in database
+3. save bill in google drive
+ 
+
