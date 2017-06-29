@@ -46,6 +46,7 @@ roaming data: https://msdn.microsoft.com/library/60f40214-c201-4afe-a2f5-0ef3a7d
 
 uwp api: https://docs.microsoft.com/en-us/uwp/api/windows.storage.storagefolder
 WINJS.Promise: https://fknet.wordpress.com/2013/02/08/winjs-promises-lessons-learned/
+promise for dummies: https://scotch.io/tutorials/javascript-promises-for-dummies
 
 ----------------------------------------------------------------------------------------------------------------
 
@@ -96,8 +97,8 @@ add plugin
  build >>cordova build windows --archs=x64
  add window >>cordova platform add windows
  remove window >>cordova platform rm windows
- add plugin >> cordova plugin add ..\GoogleDriveSync
- rm plugin >>cordova plugin rm cordova-plugin-jack-google-drive-sync
+ add plugin >> cordova plugin add ..\FileDatabase
+ rm plugin >>cordova plugin rm cordova-plugin-jack-file-database
 
 --------------------------
 

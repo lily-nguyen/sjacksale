@@ -100,7 +100,7 @@ var billView = {
 	},
 	
 	getFileName : function () {
-		return 'testexportfile';
+		return 'testexportfile.csv';
 	}
 
 }

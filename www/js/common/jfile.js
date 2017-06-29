@@ -39,27 +39,7 @@ var jFile = {
     onErrorLoadFs : function (e) {
     	console.log("File system fail...");
     },
-    
-    writeFile : function (file) {
-    	/*
-    	file.createWriter(function (fileWriter) {
-
-            fileWriter.onwriteend = function() {
-                console.log("Successful file write...");
-            };
-
-            fileWriter.onerror = function (e) {
-                console.log("Failed file write: " + e.toString());
-            };
-
-            dataObj = new Blob([contentF], { type: 'text/csv' });
-
-            fileWriter.write(dataObj);
-        });    	*/
-    	
-        // TODO: write content to file
-    },
-    
+       
     isRights : function () {
     	return false;
     },
