@@ -1,4 +1,78 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+var jFile = {
+		
+	/**
+	 * contentF: body of the file
+	 */
+	contentF : null,
+	
+	/**
+	 * nameF: name of the file
+	 */
+	nameF : null,
+	
+	/**
+	 * formatF : format of the file
+	 */
+	formatF : null,
+	
+    initial: function (name, content, formatFile) {
+    	this.nameF = name;
+    	this.contentF = content;
+    	this.formatF = formatFile;
+    },
+
+    /**
+     * create a new file and save content to the file
+     */
+    createFile : function () {
+    	var file = [];
+    	file.push(this.nameF);
+    	file.push(this.contentF);
+    	file.push(this.formatF);
+    	window.FileDatabase.file.createFile(file);
+    },
+    
+    onErrorCreateFile : function (e) {
+    	console.log("Create file fail...");
+    },
+    
+    onErrorLoadFs : function (e) {
+    	console.log("File system fail...");
+    },
+    
+    writeFile : function (file) {
+    	/*
+    	file.createWriter(function (fileWriter) {
+
+            fileWriter.onwriteend = function() {
+                console.log("Successful file write...");
+            };
+
+            fileWriter.onerror = function (e) {
+                console.log("Failed file write: " + e.toString());
+            };
+
+            dataObj = new Blob([contentF], { type: 'text/csv' });
+
+            fileWriter.write(dataObj);
+        });    	*/
+    	
+        // TODO: write content to file
+    },
+    
+    isRights : function () {
+    	return false;
+    },
+    
+    grantRights : function () {
+    	window.FileDatabase.file.grantRights();
+    }
+};
+
+module.exports = jFile;
+
+},{}],2:[function(require,module,exports){
 var data = {
 	
 	/**
@@ -55,65 +129,41 @@ var config = {
 }
 
 module.exports = config;
-},{}],2:[function(require,module,exports){
-var jFile = {
+},{}],3:[function(require,module,exports){
+var jFile = require('./common/jfile');
+
+configure = function () {
+	// TODO: check that whether the database folder permission is granted, if it is not, request it
+	if (!isDatabaseFolderRights()) {
+		grantRights();
+	} else {
+		
+	}
+}
+
+function isDatabaseFolderRights () {
+	return jFile.isRights();
+} 
+
+function grantRights () {
+	return jFile.grantRights();
+}
+
+
+module.exports = configure;
+},{"./common/jfile":1}],4:[function(require,module,exports){
+var CSV = {
 		
 	NEWLINE	 : "\r\n",
 	SEPERATED : ",",
+	CSV_FORMAT : 'text/csv'		
 		
-	contentF : null,
-	
-    initial: function (content) {
-    	contentF = content;
-    },
+}
 
-    createFile : function () {
-    	
-    	$this = this;
-    	
-    	window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function (dirEntry) {
-
-    	    console.log('file system open: ' + dirEntry.name);
-    	    dirEntry.getFile("fileToAppend.csv", {create: true, exclusive: false}, function(fileEntry) {
-    	    	
-    	    	$this.writeFile(fileEntry);
-    	    	
-            }, this.onErrorCreateFile);
-
-    	}, this.onErrorLoadFs); 
-    	
-    },
-    
-    onErrorCreateFile : function (e) {
-    	console.log("Create file fail...");
-    },
-    
-    onErrorLoadFs : function (e) {
-    	console.log("File system fail...");
-    },
-    
-    writeFile : function (file) {
-    	file.createWriter(function (fileWriter) {
-
-            fileWriter.onwriteend = function() {
-                console.log("Successful file write...");
-            };
-
-            fileWriter.onerror = function (e) {
-                console.log("Failed file write: " + e.toString());
-            };
-
-            dataObj = new Blob([contentF], { type: 'text/csv' });
-
-            fileWriter.write(dataObj);
-        });    	
-    }
-};
-
-module.exports = jFile;
-
-},{}],3:[function(require,module,exports){
+module.exports.CSV = CSV;
+},{}],5:[function(require,module,exports){
 var billPage = require('./page/billpage');
+var configure = require('./configuration');
 var app = {
     // Application Constructor
     initialize : function() {
@@ -126,14 +176,16 @@ var app = {
     },
     
     initial : function () {
+    	configure();
     	billPage.initial();
     }
 };
 
 app.initialize();
-},{"./page/billpage":4}],4:[function(require,module,exports){
+},{"./configuration":3,"./page/billpage":6}],6:[function(require,module,exports){
 var jFile = require('../common/jfile');
-var tableConfig = require('../common/config');
+var tableConfig = require('../config');
+var fileFormat = require('../fileformat').CSV;
 
 var billPage = {
 		
@@ -143,7 +195,7 @@ var billPage = {
 	
 	createBill : function () {
 		var bill = billView.writeToFile(billView.getBill());
-		jFile.initial(bill); 
+		jFile.initial(billView.getFileName(), bill, fileFormat.CSV_FORMAT); 
 		jFile.createFile();
 	}
 }
@@ -174,7 +226,7 @@ var billView = {
 		
 		for (var i = 1; i < showIds.length; i++) {
 			data = this.getData(showIds[i], fullData);
-			title += jFile.SEPERATED + data.title;
+			title += fileFormat.SEPERATED + data.title;
 		}
 		
 		return title;
@@ -186,10 +238,10 @@ var billView = {
 	getBodyItem : function (showIds, contentItem) {
 		var item = "";
 		for (var i = 0; i < showIds.length; i++) {
-			item += contentItem[showIds[i]] + jFile.SEPERATED;
+			item += contentItem[showIds[i]] + fileFormat.SEPERATED;
 		}
 		
-		item = item.substring(0, item.length - jFile.SEPERATED.length);
+		item = item.substring(0, item.length - fileFormat.SEPERATED.length);
 		
 		return item;
 	},
@@ -201,7 +253,7 @@ var billView = {
 		var body = this.getBodyItem(showIds, content[0]);
 		
 		for (var i = 1; i < content.length; i++) {
-			body += jFile.NEWLINE + this.getBodyItem(showIds, content[i]);
+			body += fileFormat.NEWLINE + this.getBodyItem(showIds, content[i]);
 		}
 		
 		return body;
@@ -211,24 +263,32 @@ var billView = {
 		var total = "";
 		
 		for (var i = 1; i < showIds.length - 2; i++) {
-			total += jFile.SEPERATED;
+			total += fileFormat.SEPERATED;
 		}
 		
-		total += jFile.SEPERATED + this.TOTAL_NAME;
-		total += jFile.SEPERATED + totalItem;
+		total += fileFormat.SEPERATED + this.TOTAL_NAME;
+		total += fileFormat.SEPERATED + totalItem;
 		
 		return total;
 	},
 	
+	/**
+	 * convert bill object to string
+	 * TODO: using iostream instead of
+	 */
 	writeToFile : function (content) {
 		var showIds = tableConfig.getShowData('billing');
 		var data = this.getTitle(showIds, tableConfig.getFullShowData('billing'));
-		data = data + jFile.NEWLINE + this.getBody(showIds,content.items);
-		data = data + jFile.NEWLINE + this.getTotal(showIds, content.total);
+		data = data + fileFormat.NEWLINE + this.getBody(showIds,content.items);
+		data = data + fileFormat.NEWLINE + this.getTotal(showIds, content.total);
 		return data;
+	},
+	
+	getFileName : function () {
+		return 'testexportfile';
 	}
 
 }
 
 module.exports = billPage;
-},{"../common/config":1,"../common/jfile":2}]},{},[3]);
+},{"../common/jfile":1,"../config":2,"../fileformat":4}]},{},[5]);

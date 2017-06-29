@@ -23,8 +23,9 @@
         <allow-intent href="itms-apps:*" />
     </platform>
     <preference name="windows-target-version" value="10.0" />
-    <engine name="windows" spec="^5.0.0" />
     <plugin name="cordova-plugin-file" spec="^4.3.3" />
     <plugin name="cordova-plugin-jack-google-drive-sync" spec="..\GoogleDriveSync" />
     <plugin name="cordova-plugin-whitelist" spec="^1.3.2" />
+    <plugin name="cordova-plugin-jack-file-database" spec="..\FileDatabase" />
+    <engine name="windows" spec="~5.0.0" />
 </widget>

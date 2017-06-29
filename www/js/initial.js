@@ -1,4 +1,5 @@
 var billPage = require('./page/billpage');
+var configure = require('./configuration');
 var app = {
     // Application Constructor
     initialize : function() {
@@ -11,6 +12,7 @@ var app = {
     },
     
     initial : function () {
+    	configure();
     	billPage.initial();
     }
 };

@@ -1,29 +1,35 @@
 var jFile = {
 		
-	NEWLINE	 : "\r\n",
-	SEPERATED : ",",
-		
+	/**
+	 * contentF: body of the file
+	 */
 	contentF : null,
 	
-    initial: function (content) {
-    	contentF = content;
+	/**
+	 * nameF: name of the file
+	 */
+	nameF : null,
+	
+	/**
+	 * formatF : format of the file
+	 */
+	formatF : null,
+	
+    initial: function (name, content, formatFile) {
+    	this.nameF = name;
+    	this.contentF = content;
+    	this.formatF = formatFile;
     },
 
+    /**
+     * create a new file and save content to the file
+     */
     createFile : function () {
-    	
-    	$this = this;
-    	
-    	window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function (dirEntry) {
-
-    	    console.log('file system open: ' + dirEntry.name);
-    	    dirEntry.getFile("fileToAppend.csv", {create: true, exclusive: false}, function(fileEntry) {
-    	    	
-    	    	$this.writeFile(fileEntry);
-    	    	
-            }, this.onErrorCreateFile);
-
-    	}, this.onErrorLoadFs); 
-    	
+    	var file = [];
+    	file.push(this.nameF);
+    	file.push(this.contentF);
+    	file.push(this.formatF);
+    	window.FileDatabase.file.createFile(file);
     },
     
     onErrorCreateFile : function (e) {
@@ -35,6 +41,7 @@ var jFile = {
     },
     
     writeFile : function (file) {
+    	/*
     	file.createWriter(function (fileWriter) {
 
             fileWriter.onwriteend = function() {
@@ -48,7 +55,17 @@ var jFile = {
             dataObj = new Blob([contentF], { type: 'text/csv' });
 
             fileWriter.write(dataObj);
-        });    	
+        });    	*/
+    	
+        // TODO: write content to file
+    },
+    
+    isRights : function () {
+    	return false;
+    },
+    
+    grantRights : function () {
+    	window.FileDatabase.file.grantRights();
     }
 };
 

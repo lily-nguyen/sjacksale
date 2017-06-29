@@ -1,5 +1,6 @@
 var jFile = require('../common/jfile');
-var tableConfig = require('../common/config');
+var tableConfig = require('../config');
+var fileFormat = require('../fileformat').CSV;
 
 var billPage = {
 		
@@ -9,7 +10,7 @@ var billPage = {
 	
 	createBill : function () {
 		var bill = billView.writeToFile(billView.getBill());
-		jFile.initial(bill); 
+		jFile.initial(billView.getFileName(), bill, fileFormat.CSV_FORMAT); 
 		jFile.createFile();
 	}
 }
@@ -40,7 +41,7 @@ var billView = {
 		
 		for (var i = 1; i < showIds.length; i++) {
 			data = this.getData(showIds[i], fullData);
-			title += jFile.SEPERATED + data.title;
+			title += fileFormat.SEPERATED + data.title;
 		}
 		
 		return title;
@@ -52,10 +53,10 @@ var billView = {
 	getBodyItem : function (showIds, contentItem) {
 		var item = "";
 		for (var i = 0; i < showIds.length; i++) {
-			item += contentItem[showIds[i]] + jFile.SEPERATED;
+			item += contentItem[showIds[i]] + fileFormat.SEPERATED;
 		}
 		
-		item = item.substring(0, item.length - jFile.SEPERATED.length);
+		item = item.substring(0, item.length - fileFormat.SEPERATED.length);
 		
 		return item;
 	},
@@ -67,7 +68,7 @@ var billView = {
 		var body = this.getBodyItem(showIds, content[0]);
 		
 		for (var i = 1; i < content.length; i++) {
-			body += jFile.NEWLINE + this.getBodyItem(showIds, content[i]);
+			body += fileFormat.NEWLINE + this.getBodyItem(showIds, content[i]);
 		}
 		
 		return body;
@@ -77,21 +78,29 @@ var billView = {
 		var total = "";
 		
 		for (var i = 1; i < showIds.length - 2; i++) {
-			total += jFile.SEPERATED;
+			total += fileFormat.SEPERATED;
 		}
 		
-		total += jFile.SEPERATED + this.TOTAL_NAME;
-		total += jFile.SEPERATED + totalItem;
+		total += fileFormat.SEPERATED + this.TOTAL_NAME;
+		total += fileFormat.SEPERATED + totalItem;
 		
 		return total;
 	},
 	
+	/**
+	 * convert bill object to string
+	 * TODO: using iostream instead of
+	 */
 	writeToFile : function (content) {
 		var showIds = tableConfig.getShowData('billing');
 		var data = this.getTitle(showIds, tableConfig.getFullShowData('billing'));
-		data = data + jFile.NEWLINE + this.getBody(showIds,content.items);
-		data = data + jFile.NEWLINE + this.getTotal(showIds, content.total);
+		data = data + fileFormat.NEWLINE + this.getBody(showIds,content.items);
+		data = data + fileFormat.NEWLINE + this.getTotal(showIds, content.total);
 		return data;
+	},
+	
+	getFileName : function () {
+		return 'testexportfile';
 	}
 
 }

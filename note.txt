@@ -42,6 +42,11 @@ plugin windows: https://taco.visualstudio.com/en-us/docs/create-plugin-windows-p
 				
 Task Scheduler: http://www.digitalcitizen.life/how-create-task-basic-task-wizard			
 
+roaming data: https://msdn.microsoft.com/library/60f40214-c201-4afe-a2f5-0ef3a7de0076
+
+uwp api: https://docs.microsoft.com/en-us/uwp/api/windows.storage.storagefolder
+WINJS.Promise: https://fknet.wordpress.com/2013/02/08/winjs-promises-lessons-learned/
+
 ----------------------------------------------------------------------------------------------------------------
 
 - Setup environment
