@@ -40,27 +40,7 @@ var jFile = {
     onErrorLoadFs : function (e) {
     	console.log("File system fail...");
     },
-    
-    writeFile : function (file) {
-    	/*
-    	file.createWriter(function (fileWriter) {
-
-            fileWriter.onwriteend = function() {
-                console.log("Successful file write...");
-            };
-
-            fileWriter.onerror = function (e) {
-                console.log("Failed file write: " + e.toString());
-            };
-
-            dataObj = new Blob([contentF], { type: 'text/csv' });
-
-            fileWriter.write(dataObj);
-        });    	*/
-    	
-        // TODO: write content to file
-    },
-    
+       
     isRights : function () {
     	return false;
     },
@@ -162,7 +142,7 @@ var CSV = {
 
 module.exports.CSV = CSV;
 },{}],5:[function(require,module,exports){
-var billPage = require('./page/billpage');
+var billPage = require('./pages/billpage/billpage');
 var configure = require('./configuration');
 var app = {
     // Application Constructor
@@ -182,35 +162,15 @@ var app = {
 };
 
 app.initialize();
-},{"./configuration":3,"./page/billpage":6}],6:[function(require,module,exports){
-var jFile = require('../common/jfile');
-var tableConfig = require('../config');
-var fileFormat = require('../fileformat').CSV;
-
-var billPage = {
-		
-	initial	: function () {
-		$(".submit-bill").on("click", this.createBill);
-	},
-	
-	createBill : function () {
-		var bill = billView.writeToFile(billView.getBill());
-		jFile.initial(billView.getFileName(), bill, fileFormat.CSV_FORMAT); 
-		jFile.createFile();
-	}
-}
-
-var billView = {
+},{"./configuration":3,"./pages/billpage/billpage":8}],6:[function(require,module,exports){
+var billDataHandler = {
 	
 	TOTAL_NAME : 'Tong Cong',	
-		
-	getBill : function () {
-		var billObject = {title : {}, items:[], total: 8000};
-		billObject.items.push({name:"San Pham A", prize: 20, quantity: 300, total: 6000});		
-		billObject.items.push({name:"San Pham B", prize: 10, quantity: 200, total: 2000});
-		return billObject;
-	},
 	
+	getBill : function () {
+		return "";
+	},
+		
 	getData : function (key, items) {
 		for (var i = 0; i < items.length; i++) {
 			if (items[i].id === key) {
@@ -276,7 +236,7 @@ var billView = {
 	 * convert bill object to string
 	 * TODO: using iostream instead of
 	 */
-	writeToFile : function (content) {
+	convertToString : function (content) {
 		var showIds = tableConfig.getShowData('billing');
 		var data = this.getTitle(showIds, tableConfig.getFullShowData('billing'));
 		data = data + fileFormat.NEWLINE + this.getBody(showIds,content.items);
@@ -285,10 +245,105 @@ var billView = {
 	},
 	
 	getFileName : function () {
-		return 'testexportfile';
+		return 'testexportfile.csv';
 	}
 
 }
 
+module.exports = billDataHandler;
+},{}],7:[function(require,module,exports){
+(function ($, window) {
+	
+	function getNewRow () {
+		var newRow = '<tr class="item">' +
+					'<td><input class="subitem" type="text" id="name"></td>' +
+	        		'<td><input class="subitem" type="text" id="price"></td>' +
+	        		'<td><input class="subitem" type="text" id="quantity"></td>' +
+	        		'<td><input class="subitem" type="text" id="total"></td>' +
+	        		'</tr>';
+		return newRow;
+	}
+	
+	function addLastRow($el) {
+		$el.after(getNewRow());
+		var newRow = $el.next('.item');
+		initialAddLastRow(newRow);
+	}
+	
+	function isLastRow ($element) {
+		var $nextItem = $element.next('.item');
+		return $nextItem.length == 0;
+	}
+	
+	function getRowParent ($element) {
+		return $element.parents('.item');
+	}
+	
+	function addLastRowEvent ($elements) {
+		$elements.on("click", function () {
+			var $parent = getRowParent($(this));
+			if (isLastRow($parent)) {
+				addLastRow($parent);
+			}			
+		})		
+	}
+	
+	/**
+	 * add event that if the last row is using, add new last row.
+	 * @param $element. If a specified $element is defined, add the event for all its children ('.subitem'). 
+	 * 			If not, add the event for all elements with class '.subitem'
+	 * @returns
+	 */
+	function initialAddLastRow ($element) {
+		
+		if ($element) {
+			$subitems = $element.find('.subitem')
+		} else {
+			$subitems = $('.subitem');
+		}
+		
+		addLastRowEvent($subitems);
+	}
+	
+	function initialEditSelectedRow () {
+		
+	}
+	
+	function initialSaveEdittedRow () {
+		
+	}
+	
+	var inputHanlder = {
+		initial	: function () {
+			initialEditSelectedRow();
+			initialSaveEdittedRow();
+			initialAddLastRow();			
+		}
+	}	
+	
+	module.exports = inputHanlder;
+
+})($, window)
+},{}],8:[function(require,module,exports){
+var jFile = require('../../common/jfile');
+var tableConfig = require('../../config');
+var billInputHanlder = require('./billinputhandler'); 
+var billDataHandler = require('./billdatahandler');
+var fileFormat = require('../../fileformat').CSV;
+
+var billPage = {
+		
+	initial	: function () {
+		billInputHanlder.initial();
+		$(".submit-bill").on("click", this.createBill);
+	},
+	
+	createBill : function () {
+		var bill = billDataHandler.convertToString(billDataHandler.getBill());
+		jFile.initial(billDataHandler.getFileName(), bill, fileFormat.CSV_FORMAT); 
+		jFile.createFile();
+	}
+}
+
 module.exports = billPage;
-},{"../common/jfile":1,"../config":2,"../fileformat":4}]},{},[5]);
+},{"../../common/jfile":1,"../../config":2,"../../fileformat":4,"./billdatahandler":6,"./billinputhandler":7}]},{},[5]);

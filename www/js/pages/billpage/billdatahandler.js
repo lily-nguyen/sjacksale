@@ -1,31 +1,11 @@
-var jFile = require('../common/jfile');
-var tableConfig = require('../config');
-var fileFormat = require('../fileformat').CSV;
-
-var billPage = {
-		
-	initial	: function () {
-		$(".submit-bill").on("click", this.createBill);
-	},
-	
-	createBill : function () {
-		var bill = billView.writeToFile(billView.getBill());
-		jFile.initial(billView.getFileName(), bill, fileFormat.CSV_FORMAT); 
-		jFile.createFile();
-	}
-}
-
-var billView = {
+var billDataHandler = {
 	
 	TOTAL_NAME : 'Tong Cong',	
-		
-	getBill : function () {
-		var billObject = {title : {}, items:[], total: 8000};
-		billObject.items.push({name:"San Pham A", prize: 20, quantity: 300, total: 6000});		
-		billObject.items.push({name:"San Pham B", prize: 10, quantity: 200, total: 2000});
-		return billObject;
-	},
 	
+	getBill : function () {
+		return "";
+	},
+		
 	getData : function (key, items) {
 		for (var i = 0; i < items.length; i++) {
 			if (items[i].id === key) {
@@ -91,7 +71,7 @@ var billView = {
 	 * convert bill object to string
 	 * TODO: using iostream instead of
 	 */
-	writeToFile : function (content) {
+	convertToString : function (content) {
 		var showIds = tableConfig.getShowData('billing');
 		var data = this.getTitle(showIds, tableConfig.getFullShowData('billing'));
 		data = data + fileFormat.NEWLINE + this.getBody(showIds,content.items);
@@ -105,4 +85,4 @@ var billView = {
 
 }
 
-module.exports = billPage;
+module.exports = billDataHandler;

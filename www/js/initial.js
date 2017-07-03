@@ -1,4 +1,4 @@
-var billPage = require('./page/billpage');
+var billPage = require('./pages/billpage/billpage');
 var configure = require('./configuration');
 var app = {
     // Application Constructor

@@ -1,0 +1,23 @@
+var openPicker = new Windows.Storage.Pickers.FileOpenPicker();
+openPicker.viewMode = Windows.Storage.Pickers.PickerViewMode.thumbnail;
+openPicker.suggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.picturesLibrary;
+openPicker.fileTypeFilter.replaceAll([".png", ".jpg", ".jpeg"]);
+openPicker.pickSingleFileAsync().then( function (f) { 		
+	console.log("huyen huye"); 	
+	console.log(f.name); });
+	
+	
+var folderPicker = new Windows.Storage.Pickers.FolderPicker();
+folderPicker.suggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.desktop;
+folderPicker.fileTypeFilter.replaceAll(["*"]);
+folderPicker.pickSingleFolderAsync().then( function (f) { 
+	Windows.Storage.AccessCache.StorageApplicationPermissions.futureAccessList.addOrReplace("PickedFolderToken", f);
+	console.log("huyen huye"); 	
+	console.log(f.name); });
+	
+	
+	var StorageFolder = Windows.Storage.StorageFolder;
+var folderPromise = StorageFolder.getFolderFromPathAsync('D:\\work');
+folderPromise.done(function getFolderSuccess(folder) {
+	console.log(folder.name);
+});
